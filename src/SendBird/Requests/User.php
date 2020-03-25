@@ -65,6 +65,39 @@ class User extends BaseRequest
         return $this->request("/users/{$user_id}", 'put', $body);
     }
 
+    public function getMetadata($user_id, $key)
+    {
+        $key = urlencode($key);
+        $metadata = $this->request("/users/{$user_id}/metadata/{$key}", 'get');
+        if (isset($metadata[$key])) {
+            return $metadata[$key];
+        }
+
+        return null;
+    }
+
+    public function createMetadata($user_id, $key, $value)
+    {
+        return $this->updateMetadata($user_id, $key, $value);
+    }
+
+    public function updateMetadata($user_id, $key, $value)
+    {
+        $key = urlencode($key);
+        $body = [
+            'value' => $value,
+            'upsert' => true
+        ];
+        return $this->request("/users/{$user_id}/metadata/{$key}", 'put', $body);
+    }
+
+    public function deleteMetadata($user_id, $key)
+    {
+        $key = urlencode($key);
+        $response = $this->request("/users/{$user_id}/metadata/{$key}", 'delete');
+        return count($response) == 0 ?: $response;
+    }
+
     public function addDeviceToken($user_id, $token_type, $token)
     {
         $body = [
