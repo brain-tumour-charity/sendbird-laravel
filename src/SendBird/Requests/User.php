@@ -34,6 +34,7 @@ class User extends BaseRequest
         $body = [
             'user_id' => $user_id,
             'nickname' => $username,
+            'profile_url' => null,
             'issue_access_token' => true,
             'has_ever_logged_in' => true
         ];
