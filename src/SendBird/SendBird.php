@@ -10,7 +10,7 @@ class SendBird
 
     public static function getInstance($key)
     {
-        $class = "App\SendBird\Requests\\".$key;
+        $class = "SendBird\Requests\\".$key;
         if (!class_exists($class)) {
             throw new \Exception("{$class} not exists");
         }
