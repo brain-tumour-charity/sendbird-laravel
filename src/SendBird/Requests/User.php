@@ -2,7 +2,7 @@
 
 namespace SendBird\Requests;
 
-use Carbon;
+use Carbon\Carbon;
 
 class User extends BaseRequest
 {
@@ -16,7 +16,7 @@ class User extends BaseRequest
         return $this->request("/users/{$user_id}", 'get');
     }
 
-    public function createUser($user_id, $username, $thumbnail)
+    public function createUser($user_id, $username, $thumbnail = null)
     {
         $body = [
             'user_id' => $user_id,
@@ -29,13 +29,35 @@ class User extends BaseRequest
         return $this->request('/users', 'post', $body);
     }
 
-    public function updateUser($user_id, $username, $thumbnail)
+    public function createUserIssueToken($user_id, $username = null)
+    {
+        $body = [
+            'user_id' => $user_id,
+            'nickname' => $username,
+            'issue_access_token' => true,
+            'has_ever_logged_in' => true
+        ];
+        return $this->request('/users', 'post', $body);
+    }
+
+    public function updateUser($user_id, $username, $thumbnail = null)
     {
         $body = [
             'nickname' => $username,
             'profile_url' => $thumbnail,
             'issue_access_token' => true,
             'issue_session_token' => true,
+            'is_active' => true,
+            'has_ever_logged_in' => true,
+            'last_seen_at' => Carbon::now()->timestamp
+        ];
+        return $this->request("/users/{$user_id}", 'put', $body);
+    }
+
+    public function issueAccessToken($user_id)
+    {
+        $body = [
+            'issue_access_token' => true,
             'is_active' => true,
             'has_ever_logged_in' => true,
             'last_seen_at' => Carbon::now()->timestamp
