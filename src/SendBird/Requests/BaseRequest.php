@@ -44,8 +44,13 @@ abstract class BaseRequest
 
         $http = new Client();
 
-        $response = (string)$http->request($method, $url, $httpOptions)->getBody();
+        $response = $http->request($method, $url, $httpOptions);
+        $body = json_decode($response->getBody(), true);
 
-        return json_decode($response, true);
+        if (isset($body['error'])) {
+            throw new \Exception($body['message'], $body['code']);
+        }
+
+        return $body;
     }
 }
