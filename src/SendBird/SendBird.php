@@ -6,6 +6,7 @@ class SendBird
 {
     const USER = 'User';
     const CHANNEL = 'Channel';
+    const GROUP = 'Group';
     const MESSAGE = 'Message';
 
     public static function getInstance($key)
