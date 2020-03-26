@@ -11,6 +11,12 @@ class User extends BaseRequest
         return $this->request('/users', 'get');
     }
 
+    public function findUserByNickname($nickname)
+    {
+        $nickname = urlencode($nickname);
+        return $this->request("/users?nickname={$nickname}", 'get');
+    }
+
     public function viewAUser($user_id)
     {
         return $this->request("/users/{$user_id}", 'get');
