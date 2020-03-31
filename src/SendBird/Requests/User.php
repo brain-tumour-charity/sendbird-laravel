@@ -117,4 +117,9 @@ class User extends BaseRequest
         $body[$type] = $token;
         return $this->request("/users/{$user_id}/push/{$token_type}", 'post', $body);
     }
+
+    public function listBannedChannels($user_id)
+    {
+        return $this->request("/users/{$user_id}/ban", 'get');
+    }
 }

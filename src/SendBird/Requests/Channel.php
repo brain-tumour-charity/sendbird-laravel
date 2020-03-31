@@ -4,52 +4,57 @@ namespace SendBird\Requests;
 
 class Channel extends BaseRequest
 {
-    public function createChannel($name, $cover_url, $users = [], $hidden = [])
+    public function createChannel($name, $url, $cover_url, $operators = [])
     {
         $body = [
             'name' => $name,
+            'channel_url' => $url,
             'cover_url' => $cover_url,
-            'user_ids' => $users,
-            'strict' => true
+            'operator_ids' => $operators,
         ];
 
-        if (!empty($hidden)) {
-            $hidden_status = [];
-            foreach ($hidden as $id) {
-                $hidden_status[$id] = "hidden_allow_auto_unhide";
-            }
-            $body['hidden_status'] = json_decode(json_encode($hidden_status));
-        }
-
-        return $this->request('/group_channels', 'post', $body);
+        return $this->request('/open_channels', 'post', $body);
     }
 
     public function viewAChannel($channel_url)
     {
-        $body = [
-            'channel_url' => $channel_url,
-            'show_member' => true
-        ];
-
-        return $this->request("/group_channels/{$channel_url}", 'get', $body);
+        return $this->request("/open_channels/{$channel_url}", 'get', $body);
     }
 
-    public function listMembers($channel_url)
+    public function listParticipants($channel_url)
     {
         $body = [
             'channel_url' => $channel_url
         ];
 
-        return $this->request("/group_channels/{$channel_url}/members", 'get', $body);
+        return $this->request("/open_channels/{$channel_url}/participants", 'get', $body);
     }
 
-    public function inviteAsMembers($channel_url, $users = [])
+    public function viewBanForChannel($channel_url, $user_id)
+    {
+        return $this->request("/open_channels/{$channel_url}/ban/{$user_id}", 'get');
+    }
+
+    public function banUser($channel_url, $user_id, $seconds = -1, $agent_id = null, $reason = null)
     {
         $body = [
-            'channel_url' => $channel_url,
-            'user_ids' => $users
+            'user_id' => $user_id,
+            'seconds' => $seconds,
         ];
-        
-        return $this->request("/group_channels/{$channel_url}/invite", 'post', $body);
+
+        if ($agent_id) {
+            $body['agent_id'] = $agent_id;
+        }
+
+        if ($reason) {
+            $body['description'] = $reason;
+        }
+
+        return $this->request("/open_channels/{$channel_url}/ban", 'post', $body);
+    }
+
+    public function unbanUser($channel_url, $user_id)
+    {
+        return $this->request("/open_channels/{$channel_url}/ban/{$user_id}", 'delete');
     }
 }
