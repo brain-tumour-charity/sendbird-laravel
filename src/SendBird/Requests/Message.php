@@ -1,6 +1,6 @@
 <?php
 
-namespace Sendbird\Requests;
+namespace SendBird\Requests;
 
 class Message extends BaseRequest
 {
@@ -13,7 +13,7 @@ class Message extends BaseRequest
             'message' => $messsage,
             'user_id' => $sender_id
         ];
-        
+
         return $this->request("/{$channel_type}/{$channel_url}/messages", 'post', $body);
     }
 
@@ -25,7 +25,12 @@ class Message extends BaseRequest
             'message_type' => 'ADMM',
             'message' => $messsage
         ];
-        
+
         return $this->request("/{$channel_type}/{$channel_url}/messages", 'post', $body);
+    }
+
+    public function deleteMessage($channel_type = 'open_channels', $channel_url, $message_id)
+    {
+        return $this->request("/{$channel_type}/{$channel_url}/messages/{$message_id}", 'delete');
     }
 }
