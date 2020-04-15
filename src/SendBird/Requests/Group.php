@@ -10,9 +10,12 @@ class Group extends BaseRequest
             'name' => $name,
             'cover_url' => $cover_url,
             'is_public' => $isPublic,
-            'user_ids' => $users,
             'strict' => true
         ];
+
+        if ($users) {
+            $body['user_ids'] = $users;
+        }
 
         if (!empty($extras)) {
             $body = array_merge($body, $extras);
