@@ -61,6 +61,15 @@ class Group extends BaseRequest
         return $this->request("/group_channels/{$channel_url}/invite", 'post', $body);
     }
 
+    public function declineAnInvitation($channel_url, $user)
+    {
+        $body = [
+            'user_id' => $user,
+        ];
+
+        return $this->request("/group_channels/{$channel_url}/decline", 'PUT', $body);
+    }
+
     public function leaveChannel($url, $users = [], $should_leave_all = false)
     {
         $body = [
