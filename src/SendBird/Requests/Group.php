@@ -70,6 +70,27 @@ class Group extends BaseRequest
         return $this->request("/group_channels/{$channel_url}/decline", 'PUT', $body);
     }
 
+    public function viewBanForChannel($channel_url, $user_id)
+    {
+        return $this->request("/group_channels/{$channel_url}/ban/{$user_id}", 'get');
+    }
+
+    public function banAUser($channel_url, $user, $description = '', $seconds = -1)
+    {
+        $body = [
+            'seconds' => $seconds,
+            'user_id' => $user,
+            'description' => $description,
+        ];
+
+        return $this->request("/group_channels/{$channel_url}/ban", 'post', $body);
+    }
+
+    public function unbanAUser($channel_url, $user)
+    {
+        return $this->request("/group_channels/{$channel_url}/ban/{$user}", 'delete');
+    }
+
     public function leaveChannel($url, $users = [], $should_leave_all = false)
     {
         $body = [
