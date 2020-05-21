@@ -4,7 +4,7 @@ namespace SendBird\Requests;
 
 class Message extends BaseRequest
 {
-    public function sendMessage($messsage, $messsage_type, $sender_id, $channel_url, $channel_type = 'group_channels')
+    public function sendMessage($messsage, $messsage_type, $sender_id, $channel_url, $channel_type = 'group_channels', $extras = [])
     {
         $body = [
             'channel_type' => $channel_type,
@@ -13,6 +13,10 @@ class Message extends BaseRequest
             'message' => $messsage,
             'user_id' => $sender_id
         ];
+
+        if (!empty($extras)) {
+            $body = array_merge($body, $extras);
+        }
 
         return $this->request("/{$channel_type}/{$channel_url}/messages", 'post', $body);
     }
