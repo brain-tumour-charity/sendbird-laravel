@@ -8,6 +8,11 @@
 			"name": "Ainee Chong",
 			"email": "chongstreet@gmail.com",
 			"role": "Developer"
+		},
+		{
+			"name": "Niraj Shah",
+			"email": "niraj@webniraj.com",
+			"role": "Developer"
 		}
 	],
 	"autoload": {
