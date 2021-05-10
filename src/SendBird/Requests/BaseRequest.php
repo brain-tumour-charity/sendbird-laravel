@@ -3,6 +3,7 @@
 namespace SendBird\Requests;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Str;
 
 abstract class BaseRequest
 {
@@ -34,7 +35,7 @@ abstract class BaseRequest
 
     protected function request($endpoint, $method = 'post', $body = [])
     {
-        $url = $this->base_url.str_start($endpoint, '/');
+        $url = $this->base_url . Str::start($endpoint, '/');
 
         $httpOptions = $this->httpOptions;
 
